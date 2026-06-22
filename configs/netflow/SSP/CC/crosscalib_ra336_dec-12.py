@@ -36,7 +36,7 @@ config = dict(
     field = dict(
         key = "crosscalib_ra336_decm12",
         name = "Cross-Calibration ra=336 dec=-12",
-        obs_time = datetime(2026, 5, 15, 15, 0, 0),
+        obs_time = datetime(2026, 7, 15, 15, 0, 0),
         id_prefix = ID_PREFIX
     ),
     pointings = [
@@ -230,7 +230,7 @@ config = dict(
                     ) for b in 'grizy'
                 },
                 limits = {
-                     'ps1_g': [13.0, 20.0],
+                     'ps1_g': [13.0, 18.0],
                 }
             )
         ),
