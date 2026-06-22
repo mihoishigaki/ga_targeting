@@ -13,7 +13,8 @@ config = dict(
     ),
     instrument_options = dict(
         layout = 'calibration',
-        cobra_coach_dir = '/home/mihoishigaki/tmp/cobra_coach',
+        cobra_coach_dir = '/tmp/cobra_coach',
+        #cobra_coach_dir = '/home/mihoishigaki/tmp/cobra_coach',
         # cobra_coach_module_version = None,
         # instdata_path = None,
         # blackdots_path = None,
