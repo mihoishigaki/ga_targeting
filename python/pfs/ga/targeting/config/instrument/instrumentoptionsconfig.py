@@ -7,7 +7,7 @@ class InstrumentOptionsConfig(Config):
         self.layout = 'calibration'
 
         # Temp directory for cobra coach output
-        self.cobra_coach_dir = '/tmp/cobra_coach'
+        self.cobra_coach_dir = '/home/mihoishigaki/tmp/cobra_coach'
 
         # Version of the cobra coach module to be used
         self.cobra_coach_module_version = None
