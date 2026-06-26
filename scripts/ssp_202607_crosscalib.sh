@@ -3,7 +3,7 @@
 set -e
 
 PREFIX=SSP
-VERSION="011"
+VERSION="000"
 
 NVISITS=1
 NFRAMES=2
@@ -19,7 +19,9 @@ SSP_OBS_PATH="/home/dobos/project/Subaru-PFS/spt_ssp_observation"
 EXTRA_OPTIONS=""
 
 #FIELDS="ra288_dec-11 ra288_dec-17 ra288_dec-22 ra336_dec-12"
-FIELDS="ra336_dec-12"
+#FIELDS="ra336_dec-12"
+FIELDS="ra335_dec50"
+#FIELDS="ra325_dec59"
 
 for FIELD in $FIELDS; do
 

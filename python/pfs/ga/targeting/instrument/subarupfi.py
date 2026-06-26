@@ -234,7 +234,9 @@ class SubaruPFI(Instrument, FiberAllocator):
                 logger.info(f"Excluding cobraId {cobra_id}.")
         
         # Get the black dots calibration product
-        black_dots_calibration_product = BlackDotsCalibrationProduct(pfs_black_dots_path)
+        #black_dots_calibration_product = BlackDotsCalibrationProduct(pfs_black_dots_path)
+        ## Fix for ics_cobraOps v2.0.6 
+        black_dots_calibration_product = BlackDotsCalibrationProduct.from_file(pfs_black_dots_path)
 
         bench = Bench(
             cobraCoach=cobra_coach,
