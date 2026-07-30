@@ -731,6 +731,8 @@ class Netflow():
 
         cobra_safety_margin = self.__get_netflow_option(self.__netflow_options.cobra_safety_margin, None)
         cobra_maximum_distance = self.__get_netflow_option(self.__netflow_options.cobra_maximum_distance, None)
+        fiducial_avoid_distance = self.__get_netflow_option(self.__netflow_options.fiducial_avoid_distance, None)
+        broken_cobra_margin = self.__get_netflow_option(self.__netflow_options.broken_cobra_margin, None)
 
         # Create a KDTree to find targets within the patrol radius
         kdtree = self.__build_fp_pos_kdtree(fp_pos)
@@ -739,6 +741,12 @@ class Netflow():
         centers = self.__instrument.bench.cobras.centers
         rmin = self.__instrument.bench.cobras.rMin
         rmax = self.__instrument.bench.cobras.rMax
+
+        broken_cobra_center = self.__bench.cobras.centers[~self.__bench.cobras.isGood]
+        broken_cobra_rmax = self.__bench.cobras.rMax[~self.__bench.cobras.isGood]
+
+        fiducial_positions = (self.__bench.fiducials["x_mm"] + 1j * self.__bench.fiducials["y_mm"]).to_numpy()
+        fiducial_positions = fiducial_positions[np.isfinite(fiducial_positions)]
         
         # Do a coarse search first because we'll have to calculate the distances anyway
         idx = kdtree.query_ball_point(np.stack([centers.real, centers.imag], axis=1), rmax, eps=rmax.max() * 0.05)
@@ -789,6 +797,22 @@ class Netflow():
                 else:
                     max_dist_mask = None
 
+                # Filter out targets that fall inside the broken cobras' patrol areas
+                if broken_cobra_margin is not None and np.isfinite(broken_cobra_margin):
+                    # Must be far enough from all broken cobras
+                    broken_cobra_distances = np.abs(fp_pos[fpidx][:, None] - broken_cobra_center)
+                    broken_cobra_mask = np.all(broken_cobra_distances > broken_cobra_margin * broken_cobra_rmax, axis=1)
+                else:
+                    broken_cobra_mask = None
+
+                # Filter out targets that are too close to the fiducial fibers
+                if fiducial_avoid_distance is not None and np.isfinite(fiducial_avoid_distance):
+                    # Must be far enough from all fiducial fibers
+                    fiducial_distances = np.abs(fp_pos[fpidx][:, None] - fiducial_positions)
+                    fiducial_mask = np.all(fiducial_distances > fiducial_avoid_distance, axis=1)
+                else:
+                    fiducial_mask = None
+
                 # There can be up to two solutions for the cobra angles, given a single
                 # focal plane position. Filter out invalid solutions and collect elbow positions
                 elbows = defaultdict(tuple)
@@ -806,6 +830,12 @@ class Netflow():
 
                     if max_dist_mask is not None:
                         mask &= max_dist_mask
+
+                    if broken_cobra_mask is not None:
+                        mask &= broken_cobra_mask
+
+                    if fiducial_mask is not None:
+                        mask &= fiducial_mask
 
                     # Map focal plane index to the target cache index
                     tidx = fpidx_to_tidx_map[fpidx[mask]]

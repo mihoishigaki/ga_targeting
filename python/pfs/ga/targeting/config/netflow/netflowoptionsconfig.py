@@ -37,14 +37,14 @@ class NetflowOptionsConfig(Config):
         # of the patrol region
         self.cobra_safety_margin = 0.0
 
-        # 21/06/2026: Additional safety margin for fiducial avoidance used by newer SSP cross-calibration configs
-        self.fiducialsAvoidDistance = None
-
-        # 21/06/2026: Additional safety margin for known broken cobras used by newer SSP cross-calibration configs
-        self.brokenCobrasMargin = None
-
         # Maximum distance of the tip of the cobras from their center
         self.cobra_maximum_distance = None
+
+        # Additional safety margin for known broken cobras used by newer SSP cross-calibration configs
+        self.broken_cobra_margin = None
+
+        # Additional safety margin for fiducial avoidance used by newer SSP cross-calibration configs
+        self.fiducial_avoid_distance = None
 
         self.collision_distance = 2.0
         self.forbidden_targets = []
