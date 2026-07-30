@@ -33,6 +33,31 @@ extra_columns = {
 }
 
 config = dict(
+    netflow_options = dict(
+        cobra_groups = {
+            'cal_location': dict(
+                # groups = np.random.randint(4, size=2394),
+                target_classes = [ 'cal' ],
+                min_targets = 1,
+                max_targets = 60,
+                non_observation_cost = 1000,
+            ),
+        },
+        target_classes = {
+            'sky': dict(
+                prefix = 'sky',
+                min_targets = 800,
+                max_targets = 2200,
+                non_observation_cost = 0,
+            ),
+            'cal': dict(
+                prefix = 'cal',
+                min_targets = 40,
+                max_targets = 240,
+                non_observation_cost = 0,
+            ),
+        }
+    ),
     field = dict(
         key = "crosscalib_ra336_decm12",
         name = "Cross-Calibration ra=336 dec=-12",

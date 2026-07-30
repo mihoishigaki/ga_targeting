@@ -34,6 +34,16 @@ extra_columns = {
 }
 
 config = dict(
+    netflow_options = dict(
+        target_classes = {
+            'sky': dict(
+                prefix = 'sky',
+                min_targets = 800,
+                max_targets = 2200,
+                non_observation_cost = 0,
+            ),
+        }
+    ),
     field = dict(
         key = "crosscalib_ra325_dec59",
         name = "Cross-Calibration ra=325 dec=59",
