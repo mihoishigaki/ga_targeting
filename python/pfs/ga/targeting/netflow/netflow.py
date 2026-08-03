@@ -2973,7 +2973,17 @@ class Netflow():
         fiber_broken_mask = (self.__calib_model.status & self.__calib_model.FIBER_BROKEN_MASK) != 0
         cobra_ok_mask = (self.__calib_model.status & self.__calib_model.COBRA_OK_MASK) != 0
         cobra_broken_mask = ~cobra_ok_mask & ~fiber_broken_mask
-        fiber_blocked_mask = np.array(self.__blocked_fibers.loc[self.__fiber_map.fiberId[sci_fiberidx]].status)
+
+        # TODO: verify this when blocked fibers are added to pfs_instdata. After updating to
+        #       v1.8.88, the list of blocked fibers is empty and does not explicitly list fibers
+        #       that are not blocked as the old csv format used to.
+        if len(self.__blocked_fibers) > 0:
+            raise NotImplementedError("Blocked fibers are not yet supported.")
+            fiber_blocked_mask = np.isin(self.__fiber_map.fiberId[sci_fiberidx], self.__blocked_fibers)
+            # TODO: DELETE
+            # fiber_blocked_mask = np.array(self.__blocked_fibers.loc[self.__fiber_map.fiberId[sci_fiberidx]].status)
+        else:
+            fiber_blocked_mask = np.full_like(fiber_status, False, dtype=bool)
 
         fiber_status[fiber_broken_mask] = FiberStatus.BROKENFIBER
         fiber_status[cobra_broken_mask] = FiberStatus.BROKENCOBRA

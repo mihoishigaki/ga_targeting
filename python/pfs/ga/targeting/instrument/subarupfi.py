@@ -2,6 +2,7 @@ import os
 from collections import defaultdict
 from types import SimpleNamespace
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.cm import get_cmap
@@ -148,7 +149,8 @@ class SubaruPFI(Instrument, FiberAllocator):
             # Load the list of blocked fibers
             config_root = os.path.join(self.__get_instrument_option(self.__instrument_options.instdata_path, SubaruPFI.DEFAULT_INSTDATA_PATH), 'data')
             butler = Butler(configRoot=config_root)
-            blocked_fibers = butler.get('fiberBlocked').set_index('fiberId')
+            blocked_fibers = butler.get('fiberBlocked')
+            blocked_fibers = pd.DataFrame(blocked_fibers).set_index('fiberId')
 
             logger.info(f"Loaded configuration for {len(fiber_map.fiberId)} fibers.")
             logger.info(f"Number of fibers connected to cobras: {(fiber_map.cobraId != fiber_map.MISSING_VALUE).sum()}")
