@@ -10,7 +10,7 @@ from pfs.ga.common.io import ObservationSerializer
 from ...instrument import *
 from ...projection import Pointing
 from ...data import Catalog, Observation
-from ...selection import ColorSelection, MagnitudeSelection, LinearSelection, IsochroneSelection, ConeSelection
+from ...selection import ColorSelection, MagnitudeSelection, LinearSelection, IsochroneSelection #, ConeSelection
 from ...config.netflow import NetflowConfig, FieldConfig, PointingConfig
 from ...config.pmap import PMapConfig
 from ... import Isochrone
